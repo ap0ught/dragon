@@ -181,4 +181,4 @@
     handler && handler();
   }
 
-} (this.jQuery));
+} (this.jQuery || this.Zepto));
