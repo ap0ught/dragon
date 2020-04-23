@@ -2,8 +2,15 @@
 <html>
 <head>
   <title>ROAR!</title>
-  <script src="lib/jquery.js"></script>
+  <script src="bower_components/jquery/jquery.js"></script>
+  <script>
+    if (typeof jQuery === 'undefined') {
+      document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"><\/script>');
+    }
+  </script>
   <script src="src/jquery.dragon.js"></script>
+  <script src="src/jquery.dragon-slider.js"></script>
+  <link rel="stylesheet" href="src/css/jquery.dragon-slider.css" type="text/css" />
   <style>
     .dragon {
       float: left;
@@ -31,12 +38,21 @@
       width: 300px;
     }
 
+    #dragon-slider {
+      position: absolute;
+      top: 450px;
+    }
+
     #dragon-contained {
       background: #0ff;
     }
 
     #dragon-handle {
       background: #ff8;
+    }
+
+    #dragon-event {
+      background: #bada55;
     }
   </style>
 </head>
@@ -58,7 +74,23 @@
   <div id="dragon-handle" class="dragon">
     <p>Drag me by my text!</p>
   </div>
+  <div id="dragon-event" class="dragon">
+    <p>I log things as you drag me!</p>
+  </div>
+  <div id="dragon-slider"></div>
   <script>
+    $('#dragon-event').dragon({
+      'dragStart': function () {
+        console.log('dragStart: ', this);
+      }
+      ,'drag': function () {
+        console.log('drag: ', this);
+      }
+      ,'dragEnd': function () {
+        console.log('dragEnd: ', this);
+      }
+    });
+
     $('#dragon-handle').dragon({
       'handle': 'p'
     });
@@ -71,20 +103,16 @@
       'axis': $.fn.dragon.AXIS_X
     });
 
-    $('#dragon-basic').dragon({
-      'onDragStart': function (evt) {
-        console.log('Drag start.');
-      }
-      ,'onDrag': function (evt) {
-        console.log('Dragging.');
-      }
-      ,'onDragEnd': function (evt) {
-        console.log('Drag end.');
-      }
-    });
+    $('#dragon-basic').dragon();
 
     $('#dragon-contained').dragon({
       'within': $('#dragon-container')
+    });
+
+    $('#dragon-slider').dragonSlider({
+      'drag': function (val) {
+        console.log(val);
+      }
     });
 
   </script>
